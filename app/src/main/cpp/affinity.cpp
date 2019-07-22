@@ -2,6 +2,7 @@
 // Created by qinhaihang_vendor on 2019/7/19.
 //
 
+
 #include <jni.h>
 #include <android/log.h>
 #include <unistd.h>
@@ -57,11 +58,26 @@ static int getCores() {
     return sysconf(_SC_NPROCESSORS_CONF);
 }
 
+//不起作用
+static void set_cur_thread_affinity(long mask) {
+    int err, syscallres;
+    pid_t pid = gettid();
+    syscallres = static_cast<int>(syscall(__NR_sched_setaffinity, pid, sizeof(mask), &mask));
+    if (syscallres) {
+        err = errno;
+        LOGE("Error in the syscall setaffinity: mask = %d, err=%d",mask,errno);
+    }
+    LOGD("tid = %d has setted affinity success",pid);
+}
+
 extern "C" JNIEXPORT jint JNICALL
 Java_com_sensetime_bindcpu_BindToCpu_getCores(JNIEnv *env, jclass type) {
     return getCores();
 }
 
+/**
+ * 方法可以指定线程运行的cpu
+ */
 extern "C" JNIEXPORT void JNICALL
 Java_com_sensetime_bindcpu_BindToCpu_bindToCpu(JNIEnv *env, jclass type, jint cpu) {
     int cores = getCores();
@@ -74,10 +90,11 @@ Java_com_sensetime_bindcpu_BindToCpu_bindToCpu(JNIEnv *env, jclass type, jint cp
     cpu_set_t mask;
     CPU_ZERO(&mask);
     CPU_SET(cpu, &mask);
-    if (sched_setaffinity(0, sizeof(mask), &mask) == -1)//设置线程CPU亲和力
+    if (sched_setaffinity(0, sizeof(mask), &mask) == -1)//设置线程CPU
     {
         LOGD("warning: could not set CPU affinity, continuing...\n");
     } else {
         LOGD("set affinity to %d success", cpu);
     }
+    //set_cur_thread_affinity((long)(&mask));
 }

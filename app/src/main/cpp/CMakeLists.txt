@@ -2,6 +2,26 @@
 # documentation: https://d.android.com/studio/projects/add-native-code.html
 
 # Sets the minimum version of CMake required to build the native library.
+#set (NDK_TOOLCHAIN android-armv7_16)
+#set (TARGET_ARCH ARMV7)
+#set (LIB_STATIC android-armv7)
+
+#set (NDK_TOOLCHAIN android-aarch64)
+#set (TARGET_ARCH AARCH64)
+#set (LIB_STATIC android-aarch64)
+
+#set (NDK_TOOLCHAIN windows-x86_64)
+
+#SET(NDK_STANDALONE_TOOLCHAIN D:/android/Android_Studio_3.1/Sdk/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/${NDK_TOOLCHAIN})
+#32位编译选项
+#SET(CMAKE_C_COMPILER ${NDK_STANDALONE_TOOLCHAIN}/bin/arm-linux-androideabi-gcc)
+#SET(CMAKE_CXX_COMPILER ${NDK_STANDALONE_TOOLCHAIN}/bin/arm-linux-androideabi-g++)
+#64位编译选项
+#SET(CMAKE_C_COMPILER ${NDK_STANDALONE_TOOLCHAIN}/bin/aarch64-linux-android-gcc)
+#SET(CMAKE_CXX_COMPILER ${NDK_STANDALONE_TOOLCHAIN}/bin/aarch64-linux-android-g++)
+
+#SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -O2 -std=gnu++0x")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -O2 -std=gnu++0x")
 
 cmake_minimum_required(VERSION 3.4.1)
 
